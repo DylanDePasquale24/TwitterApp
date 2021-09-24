@@ -1,10 +1,4 @@
-//
-//  APIManager.swift
-//  Twitter
-//
-//  Created by Dan on 1/3/19.
-//  Copyright © 2019 Dan. All rights reserved.
-//
+//This is a created calss that calls the api and handles all the api information
 
 import UIKit
 import BDBOAuth1Manager
