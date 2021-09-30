@@ -58,4 +58,67 @@ class TwitterAPICaller: BDBOAuth1SessionManager {
         })
     }
     
+    
+    //we create a new function to actually post the tweet
+    func postTweet(tweetString:String, success: @escaping () -> (), failure: @escaping (Error) -> ()){
+        
+        //when we call this function, it actually lets you post the tweet
+        
+        let url = "https://api.twitter.com/1.1/statuses/update.json"
+        
+        TwitterAPICaller.client?.post(url, parameters: ["status":tweetString], progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+            success()
+        }, failure: { (task: URLSessionDataTask?, error: Error) in
+            failure(error)
+        })
+        
+    }
+    
+    
+    //now this is a function to actually post the favorited tweet, we copy the post favorited tweet url from the api and then copy everything from the above function to then post it
+    func favoriteTweet(tweetID:Int, success: @escaping()->(), failure: @escaping(Error) -> ()){
+        
+        let url = "https://api.twitter.com/1.1/favorites/create.json"
+        
+        TwitterAPICaller.client?.post(url, parameters: ["id":tweetID], progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+            success()
+        }, failure: { (task: URLSessionDataTask?, error: Error) in
+            failure(error)
+        })
+        
+    }
+    
+    
+    
+    //now we do the same thing for unfavoriting as well
+    func unfavoriteTweet(tweetID:Int, success: @escaping()->(), failure: @escaping(Error) -> ()){
+        
+        let url = "https://api.twitter.com/1.1/favorites/destroy.json"
+        //this one calls the destroy.json parameter instead of the create one
+        
+        TwitterAPICaller.client?.post(url, parameters: ["id":tweetID], progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+            success()
+        }, failure: { (task: URLSessionDataTask?, error: Error) in
+            failure(error)
+        })
+        
+    }
+    
+    
+    //now do the same thing but for retweeting, a different url with the parameter of statuses/retweet
+    func retweet(tweetID:Int, success: @escaping () -> (), failure: @escaping(Error) -> ()){
+        
+        let url = "https://api.twitter.com/1.1/statuses/retweet/\(tweetID)id.json"
+        
+        TwitterAPICaller.client?.post(url, parameters: ["id":tweetID], progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+            success()
+        }, failure: { (task: URLSessionDataTask?, error: Error) in
+            failure(error)
+        })
+
+    }
+
+    
+    
+    
 }

@@ -97,8 +97,19 @@ class HomeTableViewController: UITableViewController {
         MyRefreshControl.addTarget(self, action: #selector(loadTweets), for: .valueChanged)//this adds a target to the refreshControl--> where you want this to happen (self because want it tohappen on this screen, action is to call the loadTweets function again)
         
         tableView.refreshControl = MyRefreshControl //this tells the refresh control which refresh control you are going to use, so the variable you made
+        
+        //self.tableView.rowHeight = UITableView.automaticDimension  //this makes the cell's size change automatically
+        //self.tableView.estimatedRowHeight = 150 //this gives it an automatic starting height (it will defualt to this, but will change it if it needs more or less)
+        
+        //we would have had to have done constraints for this to work, but constraints werent working with your xcode on vmware, so we can't do that
 
-     
+    }
+    
+    //note: viewDidload only runs when it is first loaded, viewDidAppear gets called every time it appears (after a segue or what not)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated) //always have to call the super class (view controller) to make sure it does any of the defaults its supposed to do, then on top of that, we add our own code
+        self.loadMoreTweets()
+        
     }
     
     
@@ -145,6 +156,13 @@ class HomeTableViewController: UITableViewController {
             cell.profileImageView.image = UIImage(data: imageData)
         }
         
+        //this calls our setFavorite function we made in the table view attribute file and we are passing in the data from the api that tells us if it's favorited or not -->its accessing the value at the index path and then for the key: favorited and returns the value, and want to make sure its treated as a bool
+        cell.setFavorite(tweetArray[indexPath.row]["favorited"] as! Bool)
+        cell.tweetID = tweetArray[indexPath.row]["id"] as! Int
+        cell.setRetweeted(tweetArray[indexPath.row]["retweeted"] as! Bool)
+    
+        
+        //this sets teh tweetID of the cell
     
         
         
